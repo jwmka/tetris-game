@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useCallback } from 'react';
+
+import Board from './components/board';
 import './App.css';
 
 function App() {
+  const play = useCallback(() => {}, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="grid">
+      <Board />
+      <div className={'rightColumn'}>
+        <div>
+          <h1>TETRIS</h1>
+          <p>Score: <span id={'score'}>0</span></p>
+          <p>Lines: <span id={'lines'}>0</span></p>
+          <p>Level: <span id={'level'}>0</span></p>
+          <canvas id={'next'} className={'next'} />
+        </div>
+        <button onClick={play} className={'playButton'}>Play</button>
+      </div>
     </div>
   );
 }
