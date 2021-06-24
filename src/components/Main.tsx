@@ -17,25 +17,33 @@ function Main() {
   // Сбрасывает игровое поле перед началом новой игры
   const reset = useCallback(() => {
     setGrid(getEmptyBoard());
-  }, [ setGrid ]);
+  }, []);
 
   // Создает матрицу нужного размера, заполненную нулями
   const getEmptyBoard = () => {
-    return Array.from(
+    let from = Array.from(
       {length: ROWS}, () => Array(COLS).fill(0)
     );
+    console.log('from >', from);
+
+    return from;
   };
 
   // -------------------------------------------------------------------------------------------------------------------
 
-  const insideWall = useCallback((x: number) => x >= 0 && x <= COLS, []);
+  const insideWall = useCallback((x: number) => x >= 0 && x < COLS, []);
   const aboveFloor = useCallback((y: number) => y >= 0 && y <= ROWS, []);
-  const notOccupied = useCallback((x: number, y: number) => grid[y] && grid[x][y] === 0, [grid]);
+  const notOccupied = useCallback((x: number, y: number) => grid[y] && grid[y][x] === 0, [grid]);
   const valid = useCallback((p: Piece) => {
     return p.shape.every((row: number[], indexY: number) => {
       return row.every((value, indexX) => {
         const x = p.x + indexX;
         const y = p.y + indexY;
+        console.log('x >', x);
+        console.log('y >', y);
+        console.log('1 >', insideWall(x));
+        console.log('2 >', aboveFloor(y));
+        console.log('3 >', notOccupied(x,y));
 
         return value === 0 ||
           (insideWall(x) && aboveFloor(y) && notOccupied(x, y));
@@ -81,6 +89,7 @@ function Main() {
         console.log('newActivePiece >', newActivePiece);
 
         // проверка нового положения
+        console.log('zxc >', valid(newActivePiece as any))
         if (valid(newActivePiece as any)) {
           // реальное перемещение фигурки, если новое положение допустимо
           activePiece.move(newActivePiece);
